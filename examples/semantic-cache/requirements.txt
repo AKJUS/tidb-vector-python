@@ -4,3 +4,4 @@ sqlmodel==0.0.19
 tidb-vector>=0.0.9
 python-dotenv
 fastapi
+starlette>=0.40.0 # not directly required, pinned by Snyk to avoid a vulnerability
