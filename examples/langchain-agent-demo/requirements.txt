@@ -1,7 +1,7 @@
-PyMySQL==1.1.0
+PyMySQL==1.1.1
 mysqlclient==2.2.4
 langchain==0.2.10
-langchain-community==0.2.9
+langchain-community==0.2.19
 sentence-transformers==3.0.1
 langchain_openai==0.1.17
 loguru==0.7.2
