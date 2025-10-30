@@ -66,25 +66,31 @@ class TiRetriever(BaseRetriever):
     """The number of top documents to return."""
     k: int
 
-    def _get_relevant_documents(self, query: str, *, run_manager: CallbackManagerForRetrieverRun) -> List[Document]:
+    def _get_relevant_documents(
+        self, query: str, *, run_manager: CallbackManagerForRetrieverRun
+    ) -> List[Document]:
         """Sync implementations for retriever."""
         query_embeddings = self.embedding_function(str(query))
         tidb_vector_res = self.rm.query(query_embeddings, k=self.k)
         passages_scores = {}
         for res in tidb_vector_res:
             passages_scores[res.document] = res.distance
-        sorted_passages = sorted(passages_scores.items(), key=lambda x: x[1], reverse=True)
+        sorted_passages = sorted(
+            passages_scores.items(), key=lambda x: x[1], reverse=True
+        )
         return [Document(text) for (text, score) in sorted_passages]
 
 
-embed_model = SentenceTransformer(os.environ.get('SENTENCE_TRANSFORMERS_MODEL'), trust_remote_code=True)
+embed_model = SentenceTransformer(
+    os.environ.get("SENTENCE_TRANSFORMERS_MODEL"), trust_remote_code=True
+)
 embed_model_dim = embed_model.get_sentence_embedding_dimension()
 
 embedding_function = partial(sentence_transformer_embedding_function, embed_model)
 
 tidb_vector_client = TiDBVectorClient(
-    table_name=os.environ.get('TIDB_TABLE_NAME', 'embedded_documents'),
-    connection_string=os.environ.get('TIDB_DATABASE_URL'),
+    table_name=os.environ.get("TIDB_TABLE_NAME", "embedded_documents"),
+    connection_string=os.environ.get("TIDB_DATABASE_URL"),
     vector_dimension=embed_model_dim,
     drop_existing_table=True,
 )
@@ -94,14 +100,16 @@ print("describe table:")
 print(tidb_vector_client.execute("describe embedded_documents;"))
 
 print("Initializing the retriever...")
-retriever = TiRetriever(rm=tidb_vector_client, embedding_function=embedding_function, k=3)
+retriever = TiRetriever(
+    rm=tidb_vector_client, embedding_function=embedding_function, k=3
+)
 print("Retriever initialized successfully.")
 
 print("Loading sample data...")
 # test sample data
 # load sample_data.txt  if not local file, you can use requests.get(url).text
 # sample data url: https://raw.githubusercontent.com/wxywb/dspy_dataset_sample/master/sample_data.txt
-with open('sample_data.txt', 'r') as f:
+with open("sample_data.txt", "r") as f:
     # I prepare a small set of data for speeding up embedding, you can replace it with your own data.
     print("sample_data.txt found.")
     sample_data = f.read()
@@ -109,7 +117,7 @@ print("Sample data loaded successfully.")
 
 print("Embedding sample data...")
 documents = []
-for idx, passage in enumerate(sample_data.split('\n')[:3]):
+for idx, passage in enumerate(sample_data.split("\n")[:3]):
     embedding = embedding_function([passage])[0]
     print(idx, passage[:10], embedding[:5])
     if len(passage) == 0:

@@ -11,8 +11,7 @@ Vectors = List[Vector]
 
 
 def sentence_transformer_embedding_function(
-        embed_model: SentenceTransformer,
-        sentences: Union[str, List[str]]
+    embed_model: SentenceTransformer, sentences: Union[str, List[str]]
 ) -> Union[Vector, Vectors]:
     """
     Generates vector embeddings for the given text using the sentence-transformers model.
@@ -77,13 +76,20 @@ class TidbRM(dspy.Retrieve):
 
     """
 
-    def __init__(self, tidb_vector_client: TiDBVectorClient, embedding_function: Optional[callable] = None, k: int = 3):
+    def __init__(
+        self,
+        tidb_vector_client: TiDBVectorClient,
+        embedding_function: Optional[callable] = None,
+        k: int = 3,
+    ):
         super().__init__(k)
         self.tidb_vector_client = tidb_vector_client
         self.embedding_function = embedding_function
         self.top_k = k
 
-    def forward(self, query_or_queries: Union[str, List[str]], k: Optional[int] = None, **kwargs) -> dspy.Prediction:
+    def forward(
+        self, query_or_queries: Union[str, List[str]], k: Optional[int] = None, **kwargs
+    ) -> dspy.Prediction:
         """
         Retrieve passages for the given query.
 
@@ -102,14 +108,20 @@ class TidbRM(dspy.Retrieve):
         """
         query_embeddings = self.embedding_function(query_or_queries)
         k = k or self.top_k
-        tidb_vector_res = self.tidb_vector_client.query(query_vector=query_embeddings, k=k)
+        tidb_vector_res = self.tidb_vector_client.query(
+            query_vector=query_embeddings, k=k
+        )
         passages_scores = {}
         for res in tidb_vector_res:
             res.metadata = dotdict(res.metadata)
             passages_scores[res.document] = res.distance
-        sorted_passages = sorted(passages_scores.items(), key=lambda x: x[1], reverse=True)
+        sorted_passages = sorted(
+            passages_scores.items(), key=lambda x: x[1], reverse=True
+        )
 
-        return dspy.Prediction(passages=[dotdict({"long_text": passage}) for passage, _ in sorted_passages])
+        return dspy.Prediction(
+            passages=[dotdict({"long_text": passage}) for passage, _ in sorted_passages]
+        )
 
 
 class GenerateAnswer(dspy.Signature):
@@ -133,4 +145,6 @@ class RAG(dspy.Module):
         context = self.retrieve(question).passages
         # COT module takes "context, query" and output "answer".
         prediction = self.generate_answer(context=context, question=question)
-        return dspy.Prediction(context=[item.long_text for item in context], answer=prediction.answer)
+        return dspy.Prediction(
+            context=[item.long_text for item in context], answer=prediction.answer
+        )
