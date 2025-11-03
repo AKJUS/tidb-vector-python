@@ -43,14 +43,14 @@ class Classification(BaseModel):
 
 
 model = ChatOpenAI(
-    base_url=os.environ.get('OLLAMA_BASE_URL'),
-    api_key=os.environ.get('OLLAMA_API_KEY'),
+    base_url=os.environ.get("OLLAMA_BASE_URL"),
+    api_key=os.environ.get("OLLAMA_API_KEY"),
     # model need support instruction function-calling.
-    model=os.environ.get('LM_MODEL_NAME'),
+    model=os.environ.get("LM_MODEL_NAME"),
     temperature=0,
 )
 tools = [convert_to_openai_tool(Classification)]
-model_with_tools = model.bind_tools(tools=tools, tool_choice='required')
+model_with_tools = model.bind_tools(tools=tools, tool_choice="required")
 
 parser = OpenAIToolsAgentOutputParser()
 prompt = PromptTemplate(
@@ -64,11 +64,18 @@ input: {input}
     input_variables=["documents", "input"],
 )
 
-chain = {"documents": retriever | format_docs, "input": RunnablePassthrough()} | prompt | model_with_tools | parser
+chain = (
+    {"documents": retriever | format_docs, "input": RunnablePassthrough()}
+    | prompt
+    | model_with_tools
+    | parser
+)
 
-resp = chain.invoke(HumanMessage(content="At My Window"), {"callbacks": [handler_file, handler_strout]})
+resp = chain.invoke(
+    HumanMessage(content="At My Window"), {"callbacks": [handler_file, handler_strout]}
+)
 print(resp)
 
 #
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass
