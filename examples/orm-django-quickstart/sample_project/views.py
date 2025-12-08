@@ -16,38 +16,36 @@ def insert_documents(request):
 # Get 3-nearest neighbor documents.
 def get_nearest_neighbors_documents(request):
     results = Document.objects.annotate(
-        distance=CosineDistance('embedding', [1, 2, 3])
-    ).order_by('distance')[:3]
+        distance=CosineDistance("embedding", [1, 2, 3])
+    ).order_by("distance")[:3]
     response = []
     for doc in results:
-        response.append({
-            'distance': doc.distance,
-            'document': doc.content
-        })
+        response.append({"distance": doc.distance, "document": doc.content})
 
     return JsonResponse(response, safe=False)
 
 
 # Get documents within a certain distance.
 def get_documents_within_distance(request):
-    results = Document.objects.annotate(
-        distance=CosineDistance('embedding', [1, 2, 3])
-    ).filter(distance__lt=0.2).order_by('distance')[:3]
+    results = (
+        Document.objects.annotate(distance=CosineDistance("embedding", [1, 2, 3]))
+        .filter(distance__lt=0.2)
+        .order_by("distance")[:3]
+    )
     response = []
     for doc in results:
-        response.append({
-            'distance': doc.distance,
-            'document': doc.content
-        })
+        response.append({"distance": doc.distance, "document": doc.content})
 
     return JsonResponse(response, safe=False)
 
 
 def list_routes(request):
-    return JsonResponse({
-        'routes': [
-            '/insert_documents',
-            '/get_nearest_neighbors_documents',
-            '/get_documents_within_distance'
-        ]
-    })
+    return JsonResponse(
+        {
+            "routes": [
+                "/insert_documents",
+                "/get_nearest_neighbors_documents",
+                "/get_documents_within_distance",
+            ]
+        }
+    )

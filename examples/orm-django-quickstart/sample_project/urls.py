@@ -21,6 +21,14 @@ from . import views
 urlpatterns = [
     path("", views.list_routes, name="index"),
     path("insert_documents", views.insert_documents, name="insert_documents"),
-    path("get_nearest_neighbors_documents", views.get_nearest_neighbors_documents, name="get_nearest_neighbors_documents"),
-    path("get_documents_within_distance", views.get_documents_within_distance, name="get_documents_within_distance"),
+    path(
+        "get_nearest_neighbors_documents",
+        views.get_nearest_neighbors_documents,
+        name="get_nearest_neighbors_documents",
+    ),
+    path(
+        "get_documents_within_distance",
+        views.get_documents_within_distance,
+        name="get_documents_within_distance",
+    ),
 ]
