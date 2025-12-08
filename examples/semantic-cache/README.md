@@ -1,4 +1,5 @@
 # Semantic Cache with Jina AI and TiDB Vector
+
 Semantic cache is a cache that stores the semantic information of the data. It can be used to speed up the search process by storing the embeddings of the data and searching for similar embeddings. This example demonstrates how to use Jina AI to generate embeddings for text data and store the embeddings in TiDB Vector Storage. It also shows how to search for similar embeddings in TiDB Vector Storage.
 
 ## Prerequisites
@@ -36,17 +37,16 @@ Get the `HOST`, `PORT`, `USERNAME`, `PASSWORD`, and `DATABASE` from the TiDB Clo
 ```bash
 export DATABASE_URI="mysql+pymysql://34u7xMnnDLSkjV1.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
 ```
-or create a `.env` file with the above environment variables.
 
+or create a `.env` file with the above environment variables.
 
 ### Run this example
 
-
 #### Start the semantic cache server
-  
-  ```bash
+
+```bash
 fastapi dev cache.py
-  ```
+```
 
 #### Test the API
 

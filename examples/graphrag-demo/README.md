@@ -46,7 +46,6 @@ Get the `OPENAI_API_KEY` from [OpenAI](https://platform.openai.com/docs/quicksta
 
 ### Run this example
 
-
 ```text
 $ python3 graphrag-demo.py
 Input your TIDB connection string:
