@@ -17,12 +17,16 @@ class VectorsModel(BaseModel):
     vectors: Vectors
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def embed_model():
-    return SentenceTransformer(os.environ.get('SENTENCE_TRANSFORMERS_MODEL'), trust_remote_code=True)
+    return SentenceTransformer(
+        os.environ.get("SENTENCE_TRANSFORMERS_MODEL"), trust_remote_code=True
+    )
 
 
-def test_sentence_transformer_embedding_function_return_shape(embed_model: SentenceTransformer):
+def test_sentence_transformer_embedding_function_return_shape(
+    embed_model: SentenceTransformer,
+):
     embed_model_dim = embed_model.get_sentence_embedding_dimension()
 
     assert embed_model.encode(["Hello, world!"]).shape == (1, embed_model_dim)
