@@ -5,7 +5,6 @@ import django_tidb.fields.vector
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = []
