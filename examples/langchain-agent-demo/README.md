@@ -2,23 +2,22 @@
 
 An Agent demo, Classify and Extract information from text using TiDBVectorClient, LangChain, and LLM.
 
-e.g.    
+e.g.
 input: "At My Window is an album released by Folk/country singer-songwriter Townes Van Zandt in 1987."
 
-query related documents: 
-  - "At My Window (album) | At My Window is an album ... "
-  - "Little Window | Little Window is the debut album of American singer-songwriter Baby Dee. ... "
-  - "Storm Windows | Storm Windows is the seventh album by American folk singer and songwriter John Prine, released in 1980. ... "
-   
+query related documents:
+
+- "At My Window (album) | At My Window is an album ... "
+- "Little Window | Little Window is the debut album of American singer-songwriter Baby Dee. ... "
+- "Storm Windows | Storm Windows is the seventh album by American folk singer and songwriter John Prine, released in 1980. ... "
+
 classify the input text: `{"category": "album", "reason": "The document is about an album named 'At My Window'."}`
-   
+
 This demo is similar to the official cookbook, but replaces the knowledge part with tidbVectorClient. It tests the
 project's compatibility with both the official features and LangChain.
 
 - https://cookbook.openai.com/examples/how_to_build_a_tool-using_agent_with_langchain
 - https://learn.deeplearning.ai/courses/functions-tools-agents-langchain/
-
-
 
 ## Prerequisites
 
@@ -62,8 +61,9 @@ mysql+pymysql://{TIDB_USER}:{TIDB_PASSWORD}@{TIDB_HOST}:{TIDB_PORT}/{TIDB_DB_NAM
 ```
 
 ### Run the example
+
 ```text
-python ./tidb-vector-python/examples/langchain-agent-demo/example.py 
+python ./tidb-vector-python/examples/langchain-agent-demo/example.py
 Connected to TiDB.
 describe table:
 {'success': True, 'result': 6, 'error': None}

@@ -19,5 +19,4 @@ This example demonstrates how to achieve GraphRAG using just 10 lines of core co
      - Find Entities and Relationships
    - Part 3: Generate Answer
 
-
 Try it in the [Google colab](https://colab.research.google.com/github/pingcap/tidb-vector-python/blob/main/examples/graphrag-step-by-step-tutorial/example.ipynb).
