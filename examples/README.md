@@ -22,6 +22,7 @@ Please follow the instructions below to set up a TiDB Serverless cluster with bu
 7. Save the connection parameters to a safe place. You will need them to connect to the TiDB Serverless cluster in the following examples.
 
 ## Examples
+
 - [OpenAI Embedding](./openai_embedding/README.md): use the OpenAI embedding model to generate vectors for text data.
 - [Image Search](./image_search/README.md): use the OpenAI CLIP model to generate vectors for image and text.
 - [LlamaIndex RAG with UI](./llamaindex-tidb-vector-with-ui/README.md): use the LlamaIndex to build an [RAG(Retrieval-Augmented Generation)](https://docs.llamaindex.ai/en/latest/getting_started/concepts/) application.
