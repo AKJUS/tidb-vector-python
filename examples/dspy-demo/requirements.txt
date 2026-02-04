@@ -4,3 +4,4 @@ dspy-ai==2.4.9
 openai==1.35.1
 sentence-transformers==3.0.1
 tidb-vector
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
