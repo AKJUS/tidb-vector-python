@@ -4,3 +4,4 @@ openai==1.27.0
 SQLAlchemy
 tidb-vector>=0.0.9
 python-dotenv
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability

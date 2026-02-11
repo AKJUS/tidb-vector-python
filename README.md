@@ -53,7 +53,9 @@ Base.metadata.create_all(engine)
 
 # Create index for L2 distance
 VectorAdaptor(engine).create_vector_index(
-    Doc.embedding, tidb_vector.DistanceMetric.L2, skip_existing=True
+    Doc.embedding,
+    tidb_vector.DistanceMetric.L2,
+    skip_existing=True
     # For cosine distance, use tidb_vector.DistanceMetric.COSINE
 )
 
@@ -67,8 +69,9 @@ with Session(engine) as session:
 # Perform Vector Search for Top K=1
 with Session(engine) as session:
     results = session.execute(
-        select(Doc.id, Doc.content)
-        .order_by(Doc.embedding.l2_distance([1, 2, 3]))
+        select(Doc.id, Doc.content).order_by(
+            Doc.embedding.l2_distance([1, 2, 3])
+        )
         # For cosine distance, use Doc.embedding.cosine_distance(...)
         .limit(1)
     ).all()
@@ -124,7 +127,9 @@ class Doc(Model):
 db.drop_tables([Doc])  # clean data from last run
 db.create_tables([Doc])
 # For cosine distance, use tidb_vector.DistanceMetric.COSINE
-VectorAdaptor(db).create_vector_index(Doc.embedding, tidb_vector.DistanceMetric.L2)
+VectorAdaptor(db).create_vector_index(
+    Doc.embedding, tidb_vector.DistanceMetric.L2
+)
 
 # Insert content with vectors
 Doc.insert_many(
@@ -139,8 +144,7 @@ Doc.insert_many(
 cursor = (
     Doc.select(Doc.id, Doc.content)
     # For cosine distance, use Doc.embedding.cosine_distance(...)
-    .order_by(Doc.embedding.l2_distance([1, 2, 3]))
-    .limit(1)
+    .order_by(Doc.embedding.l2_distance([1, 2, 3])).limit(1)
 )
 for row in cursor:
     print(row.id, row.content)
@@ -177,13 +181,13 @@ Usage:
 
 ```python
 DATABASES = {
-    'default': {
-        'ENGINE': 'django_tidb',
-        'NAME': 'django',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': 4000,
+    "default": {
+        "ENGINE": "django_tidb",
+        "NAME": "django",
+        "USER": "root",
+        "PASSWORD": "",
+        "HOST": "127.0.0.1",
+        "PORT": 4000,
     },
 }
 ```
@@ -194,10 +198,12 @@ DATABASES = {
 from django.db import models
 from django_tidb.fields.vector import VectorField, VectorIndex, L2Distance
 
+
 class Doc(models.Model):
     id = models.IntegerField(primary_key=True)
     embedding = VectorField(dimensions=3)
     content = models.TextField()
+
     class Meta:
         indexes = [VectorIndex(L2Distance("embedding"), name="idx")]
 ```
@@ -213,11 +219,9 @@ Doc.objects.create(id=3, content="tree", embedding=[1, 0, 0])
 4\. Perform Vector Search for Top K=1:
 
 ```python
-queryset = (
-    Doc.objects
-        .order_by(L2Distance("embedding", [1, 2, 3]))
-        .values("id", "content")[:1]
-)
+queryset = Doc.objects.order_by(L2Distance("embedding", [1, 2, 3])).values(
+    "id", "content"
+)[:1]
 print(queryset)
 ```
 
@@ -225,10 +229,9 @@ print(queryset)
 
 ```python
 queryset = (
-     Doc.objects
-          .filter(content="dog")
-          .order_by(L2Distance("embedding", [1, 2, 3]))
-          .values("id", "content")[:1]
+    Doc.objects.filter(content="dog")
+    .order_by(L2Distance("embedding", [1, 2, 3]))
+    .values("id", "content")[:1]
 )
 print(queryset)
 ```
@@ -246,8 +249,8 @@ Create a `TiDBVectorClient` instance:
 ```python
 from tidb_vector.integrations import TiDBVectorClient
 
-TABLE_NAME = 'vector_test'
-CONNECTION_STRING = 'mysql+pymysql://<USER>:<PASSWORD>@<HOST>:4000/<DB>?ssl_verify_cert=true&ssl_verify_identity=true'
+TABLE_NAME = "vector_test"
+CONNECTION_STRING = "mysql+pymysql://<USER>:<PASSWORD>@<HOST>:4000/<DB>?ssl_verify_cert=true&ssl_verify_identity=true"
 
 tidb_vs = TiDBVectorClient(
     # the table which will store the vector data
@@ -304,7 +307,9 @@ Bulk delete:
 tidb_vs.delete(["f8e7dee2-63b6-42f1-8b60-2d46710c1971"])
 
 # delete with filter
-tidb_vs.delete(["f8e7dee2-63b6-42f1-8b60-2d46710c1971"], filter={"category": "P1"})
+tidb_vs.delete(
+    ["f8e7dee2-63b6-42f1-8b60-2d46710c1971"], filter={"category": "P1"}
+)
 ```
 
 ## Examples
