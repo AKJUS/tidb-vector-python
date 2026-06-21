@@ -1,4 +1,5 @@
 # Jina AI Embeddings Demo
+
 This is a simple demo to show how to use Jina AI to generate embeddings for text data. Then store the embeddings in TiDB Vector Storage and search for similar embeddings.
 
 ## Prerequisites
@@ -39,8 +40,8 @@ Get the `HOST`, `PORT`, `USERNAME`, `PASSWORD`, `DATABASE`, and `CA` parameters 
 export JINA_API_KEY="****"
 export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:4000/<DATABASE>?ssl_ca=<CA>&ssl_verify_cert=true&ssl_verify_identity=true"
 ```
-or create a `.env` file with the above environment variables.
 
+or create a `.env` file with the above environment variables.
 
 ### Run this example
 
